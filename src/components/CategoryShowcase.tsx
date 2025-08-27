@@ -6,22 +6,21 @@ const categories = [
   {
     name: "Clothing",
     href: "/category/clothing",
-    imageSrc:
-      "https://images.unsplash.com/photo-1523381294911-8d3cead13475?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+    imageSrc: "/images/clothe1.jpg",
     imageAlt: "Model wearing a plain white t-shirt.",
   },
   {
     name: "Electronics",
     href: "/category/electronics",
     imageSrc:
-      "https://tse2.mm.bing.net/th/id/OIP.kkjf1ciRFqJVuR6ul2aa8gAAAA?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "/images/electronics1.webp",
     imageAlt: "Various electronic gadgets on a desk.",
   },
   {
     name: "Accessories",
     href: "/category/accessories",
     imageSrc:
-      "https://th.bing.com/th/id/R.3fe98c89a6e4b31758e7a560830dccee?rik=BRcRUQ1jVE%2flxw&riu=http%3a%2f%2fmybigsistersclosetboutique.com%2fcdn%2fshop%2fcollections%2fshutterstock_319427201.jpg%3fv%3d1710265908%26width%3d2048&ehk=l7q4E8TQrJuZdMXmEeG%2bsU1SXv2Bd%2fQoi0sqYwdwmBg%3d&risl=&pid=ImgRaw&r=0",
+      "/images/accessories1.avif",
     imageAlt:
       "Collection of stylish accessories including a watch, sunglasses, and a wallet.",
   },
@@ -29,7 +28,7 @@ const categories = [
     name: "Perfumes",
     href: "/category/perfumes",
     imageSrc:
-      "https://medias.artisanparfumeur.com/cdn-cgi/image/format=auto,width=500/https://dynamic-assets.artisanparfumeur.com/is/image/puig/PDP_LA_CHASSE_AUX_PAPILLONS_1650X1650?version=8154c37654cee1e19156daf8e4c6a1e21c0d7a4a",
+      "/images/perfume1.jpg",
     imageAlt: "A bottle of perfume on a decorative surface.",
   },
 ];
