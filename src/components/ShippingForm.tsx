@@ -1,8 +1,21 @@
 // src/components/ShippingForm.tsx
 "use client";
 
+import { UseFormRegister, FieldErrors, FieldError } from "react-hook-form";
+import { HTMLProps } from "react";
+
+interface ShippingFormValues {
+  email: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+}
+
 // The FormField helper component remains the same.
-const FormField = ({ name, label, register, error, ...props }: any) => (
+const FormField = ({ name, label, register, error, ...props }: { name: keyof ShippingFormValues, label: string, register: UseFormRegister<ShippingFormValues>, error: FieldError | undefined } & HTMLProps<HTMLInputElement>) => (
   <div>
     <label
       htmlFor={name}
@@ -28,8 +41,8 @@ export default function ShippingForm({
   errors,
   isDisabled,
 }: {
-  register: any;
-  errors: any;
+  register: UseFormRegister<ShippingFormValues>;
+  errors: FieldErrors<ShippingFormValues>;
   isDisabled: boolean;
 }) {
   return (

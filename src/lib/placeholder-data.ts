@@ -8,7 +8,7 @@ export type Product = {
   imageAlt: string;
   description: string;
   details: string[];
-  availableSizes?: string[];
+  availableSizes?: ('S' | 'M' | 'L' | 'XL')[];
   availableColors?: { name: string; hex: string }[];
   reviews: { average: number; count: number };
   isFeatured?: boolean;

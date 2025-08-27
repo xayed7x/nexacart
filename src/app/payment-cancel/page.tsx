@@ -11,7 +11,7 @@ export default function PaymentCancelPage() {
           Payment Cancelled
         </h1>
         <p className="text-lg text-charcoal/80 dark:text-off-white/80 mb-8">
-          Your payment process was cancelled. Your cart has been saved if you'd
+          Your payment process was cancelled. Your cart has been saved if you&apos;d
           like to try again.
         </p>
 

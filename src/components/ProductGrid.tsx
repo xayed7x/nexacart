@@ -1,4 +1,6 @@
 import { Product } from "@/lib/placeholder-data";
+import Image from "next/image";
+import Link from "next/link";
 
 type ProductGridProps = {
   title: string;
@@ -16,18 +18,20 @@ export default function ProductGrid({ title, products }: ProductGridProps) {
           {products.map((product) => (
             <div key={product.id} className="group relative text-center">
               <div className="aspect-[4/5] w-full rounded-lg overflow-hidden bg-soft-grey dark:bg-gray-800">
-                <img
+                <Image
                   src={product.imageSrc}
                   alt={product.imageAlt}
+                  width={500}
+                  height={625}
                   className="w-full h-full object-center object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <div className="mt-4">
                 <h3 className="text-lg font-montserrat font-bold text-charcoal dark:text-off-white">
-                   <a href={`/product/${product.id}`}>
+                   <Link href={`/product/${product.id}`}>
                     <span aria-hidden="true" className="absolute inset-0" />
                     {product.name}
-                  </a>
+                  </Link>
                 </h3>
                 <p className="mt-1 text-md text-charcoal dark:text-soft-grey">
                   {product.price}

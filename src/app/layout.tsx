@@ -1,7 +1,6 @@
 // src/app/layout.tsx
 "use client"; // 1. Convert to a Client Component to use hooks
 
-import type { Metadata } from "next";
 import { Montserrat, Merriweather } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";

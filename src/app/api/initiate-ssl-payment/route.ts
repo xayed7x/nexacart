@@ -2,6 +2,42 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
+
+interface SslCommerzData {
+  store_id: string | undefined;
+  store_passwd: string | undefined;
+  total_amount: number;
+  currency: string;
+  tran_id: string;
+  success_url: string;
+  fail_url: string;
+  cancel_url: string;
+  ipn_url: string;
+  shipping_method: string;
+  product_name: string;
+  product_category: string;
+  product_profile: string;
+  cus_name: string;
+  cus_email: string;
+  cus_add1: string;
+  cus_city: string;
+  cus_postcode: string;
+  cus_country: string;
+  cus_phone: string;
+  ship_name: string;
+  ship_add1: string;
+  ship_city: string;
+  ship_postcode: string;
+  ship_country: string;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -18,7 +54,7 @@ export async function POST(req: NextRequest) {
     const is_live = false; // Set to true for live environment
 
     // 3. Prepare the data payload for SSLCOMMERZ
-    const data = {
+    const data: SslCommerzData = {
       store_id,
       store_passwd,
       total_amount: total_amount,
@@ -30,7 +66,7 @@ export async function POST(req: NextRequest) {
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment-cancel`,
       ipn_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/payment-ipn`, // We will build this later
       shipping_method: "Courier",
-      product_name: cartItems.map((item: any) => item.name).join(", "),
+      product_name: cartItems.map((item: CartItem) => item.name).join(", "),
       product_category: "E-commerce",
       product_profile: "general",
       cus_name: `${customer_info.firstName} ${customer_info.lastName}`,
@@ -50,7 +86,10 @@ export async function POST(req: NextRequest) {
     // 4. Use FormData as SSLCOMMERZ expects x-www-form-urlencoded
     const formData = new FormData();
     for (const key in data) {
-      formData.append(key, (data as any)[key]);
+      const value = data[key as keyof SslCommerzData];
+      if (value !== undefined) {
+        formData.append(key, String(value));
+      }
     }
 
     // 5. Make the API call to SSLCOMMERZ

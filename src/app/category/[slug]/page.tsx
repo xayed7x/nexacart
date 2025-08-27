@@ -2,14 +2,21 @@ import { notFound } from "next/navigation";
 import { categories, products } from "@/lib/placeholder-data";
 import ProductGrid from "@/components/ProductGrid";
 
-type CategoryPageProps = {
-  params: {
+interface CategoryPageProps {
+  params: Promise<{
     slug: string;
-  };
-};
+  }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export async function generateStaticParams() {
+  return categories.map((category) => ({
+    slug: category.name.toLowerCase(),
+  }));
+}
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const category = categories.find((c) => c.name.toLowerCase() === slug);
 
@@ -29,7 +36,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <p className="font-merriweather text-lg md:text-xl max-w-3xl mb-8">
         {category.description}
       </p>
-      <ProductGrid products={categoryProducts} />
+      <ProductGrid title={`${category.name} Products`} products={categoryProducts} />
     </main>
   );
 }

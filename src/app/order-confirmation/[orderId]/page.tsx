@@ -1,10 +1,10 @@
-// src/app/order-confirmation/[orderId]/page.tsx
 "use client";
 
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CartItem } from "@/app/contexts/CartContext"; // Import the CartItem type
+import Image from "next/image";
 
 export default function OrderConfirmationPage() {
   const params = useParams();
@@ -62,9 +62,11 @@ export default function OrderConfirmationPage() {
                     className="flex items-center justify-between py-4"
                   >
                     <div className="flex items-center">
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.name}
+                        width={64}
+                        height={64}
                         className="w-16 h-16 rounded-md object-cover mr-4"
                       />
                       <div>

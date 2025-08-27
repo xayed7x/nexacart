@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 // Updated placeholder data for featured products with working image links
 const products = [
   {
@@ -54,9 +56,11 @@ export default function FeaturedProducts() {
             <div key={product.id} className="group relative text-center">
               {/* This div enforces the new aspect ratio */}
               <div className="aspect-[4/5] w-full rounded-lg overflow-hidden bg-soft-grey dark:bg-gray-800">
-                <img
+                <Image
                   src={product.imageSrc}
                   alt={product.imageAlt}
+                  width={500}
+                  height={625}
                   className="w-full h-full object-center object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>

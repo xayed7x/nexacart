@@ -49,7 +49,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   useEffect(() => {
     const items = localStorage.getItem("cartItems");
     if (items) {
-      setCartItems(JSON.parse(items));
+      setCartItems(JSON.parse(items) as CartItem[]);
     }
     setIsInitialLoad(false); // 3. Set to false after first load attempt
   }, []);

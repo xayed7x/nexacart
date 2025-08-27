@@ -1,3 +1,6 @@
+import Image from "next/image";
+import Link from "next/link";
+
 // Placeholder data for our categories (remains the same)
 const categories = [
   {
@@ -40,23 +43,25 @@ export default function CategoryShowcase() {
         </h2>
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 sm:gap-x-6 lg:gap-x-8">
           {categories.map((category) => (
-            <a
+            <Link
               key={category.name}
               href={category.href}
               className="group text-center"
             >
               {/* This div is the container that enforces the aspect ratio */}
               <div className="aspect-square w-full overflow-hidden rounded-lg">
-                <img
+                <Image
                   src={category.imageSrc}
                   alt={category.imageAlt}
+                  width={500}
+                  height={500}
                   className="h-full w-full object-cover object-center group-hover:opacity-75 transition-opacity"
                 />
               </div>
               <h3 className="mt-4 text-xl font-montserrat font-bold text-charcoal dark:text-off-white">
                 {category.name}
               </h3>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

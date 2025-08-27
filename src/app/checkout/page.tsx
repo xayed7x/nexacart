@@ -1,6 +1,7 @@
 // src/app/checkout/page.tsx
 "use client";
 
+import Image from "next/image";
 import { useCart } from "@/app/contexts/CartContext";
 import StripeProvider from "@/components/StripeProvider";
 import CheckoutForm from "@/components/CheckoutForm";
@@ -97,9 +98,11 @@ export default function CheckoutPage() {
                   className="flex items-center justify-between py-3"
                 >
                   <div className="flex items-center">
-                    <img
+                    <Image
                       src={item.image}
                       alt={item.name}
+                      width={48}
+                      height={48}
                       className="w-12 h-12 rounded-md object-cover mr-4"
                     />
                     <div>

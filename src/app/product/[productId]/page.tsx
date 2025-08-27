@@ -1,7 +1,7 @@
-// src/app/product/[id]/page.tsx
 "use client";
 
 import { notFound } from "next/navigation";
+import { useParams } from "next/navigation";
 import { products } from "@/lib/placeholder-data";
 import StarRating from "@/components/StarRating";
 import SizeSelector from "@/components/SizeSelector";
@@ -9,14 +9,12 @@ import ColorSelector from "@/components/ColorSelector";
 import DetailsAccordion from "@/components/DetailsAccordion";
 import ProductGrid from "@/components/ProductGrid";
 import { useCart } from "@/app/contexts/CartContext"; // 1. Import useCart
+import Image from "next/image";
 
 // Note: This is now a Client Component
-export default function ProductPage({
-  params,
-}: {
-  params: { productId: string };
-}) {
-  const { productId } = params;
+export default function ProductPage() {
+  const params = useParams();
+  const productId = params.productId as string;
   const product = products.find((p) => p.id === Number(productId));
   const { addToCart } = useCart(); // 2. Get the addToCart function
 
@@ -49,9 +47,11 @@ export default function ProductPage({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* Left Column: Product Image */}
         <div className="aspect-square w-full rounded-lg overflow-hidden bg-soft-grey dark:bg-gray-800">
-          <img
+          <Image
             src={product.imageSrc}
             alt={product.imageAlt}
+            width={500}
+            height={500}
             className="w-full h-full object-center object-cover"
           />
         </div>

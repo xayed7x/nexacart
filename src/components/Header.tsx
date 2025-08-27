@@ -31,30 +31,30 @@ export default function Header() {
 
           {/* Main Navigation */}
           <nav className="hidden md:flex md:space-x-8">
-            <a
+            <Link
               href="/category/clothing"
               className="font-montserrat font-bold text-charcoal hover:text-mocha-mousse transition-colors dark:text-off-white"
             >
               Clothing
-            </a>
-            <a
+            </Link>
+            <Link
               href="/category/electronics"
               className="font-montserrat font-bold text-charcoal hover:text-mocha-mousse transition-colors dark:text-off-white"
             >
               Electronics
-            </a>
-            <a
+            </Link>
+            <Link
               href="/category/accessories"
               className="font-montserrat font-bold text-charcoal hover:text-mocha-mousse transition-colors dark:text-off-white"
             >
               Accessories
-            </a>
-            <a
+            </Link>
+            <Link
               href="/category/perfumes"
               className="font-montserrat font-bold text-charcoal hover:text-mocha-mousse transition-colors dark:text-off-white"
             >
               Perfumes
-            </a>
+            </Link>
           </nav>
 
           {/* Action Icons */}

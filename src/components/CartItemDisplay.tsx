@@ -2,6 +2,7 @@
 "use client";
 
 import { CartItem, useCart } from "@/app/contexts/CartContext";
+import Image from "next/image";
 
 interface CartItemDisplayProps {
   item: CartItem;
@@ -14,9 +15,11 @@ export default function CartItemDisplay({ item }: CartItemDisplayProps) {
   return (
     <div className="flex w-full items-start space-x-4">
       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-        <img
+        <Image
           src={item.image}
           alt={item.name}
+          width={96}
+          height={96}
           className="h-full w-full object-cover object-center"
         />
       </div>
