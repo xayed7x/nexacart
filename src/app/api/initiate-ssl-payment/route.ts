@@ -40,6 +40,15 @@ interface SslCommerzData {
 
 export async function POST(req: NextRequest) {
   try {
+    // Check if required environment variables are available
+    if (!process.env.SSLCOMMERZ_STORE_ID || !process.env.SSLCOMMERZ_STORE_PASSWORD) {
+      return new NextResponse('SSLCommerz credentials not configured', { status: 500 });
+    }
+
+    if (!process.env.NEXT_PUBLIC_APP_URL) {
+      return new NextResponse('App URL not configured', { status: 500 });
+    }
+
     const body = await req.json();
     const { total_amount, currency, cartItems, customer_info } = body;
 
