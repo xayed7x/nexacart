@@ -8,7 +8,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import Link from "next/link"; // 1. Import the Link component
 
 export default function CartSidePanel() {
-  const { isCartOpen, closeCart, cartItems } = useCart();
+  const { isCartOpen, closeCart, cartItems, clearCart } = useCart();
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -122,10 +122,9 @@ export default function CartSidePanel() {
                             <button
                               type="button"
                               className="font-medium text-mocha-mousse hover:text-charcoal dark:hover:text-amber-200"
-                              onClick={closeCart}
+                              onClick={clearCart}
                             >
-                              Continue Shopping
-                              <span aria-hidden="true"> &rarr;</span>
+                              Clear Cart
                             </button>
                           </p>
                         </div>
