@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DIRECT_URL")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String
+  products    Product[]
+}
+
+model Product {
+  id              Int         @id @default(autoincrement())
+  name            String
+  href            String
+  price           Decimal     @db.Decimal(10, 2)
+  imageSrc        String
+  imageAlt        String
+  description     String
+  details         String[]
+  availableSizes  String[]
+  availableColors Json
+  reviews         Json
+  isFeatured      Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  categoryId      Int
+  category        Category    @relation(fields: [categoryId], references: [id])
+  orderItems      OrderItem[]
+}
+
+model Order {
+  id              Int      @id @default(autoincrement())
+  customerName    String
+  customerEmail   String
+  shippingAddress String
+  totalPrice      Decimal  @db.Decimal(10, 2)
+  status          String   @default("Pending")
+  createdAt       DateTime @default(now())
+
+  items OrderItem[]
+}
+
+model OrderItem {
+  id       Int     @id @default(autoincrement())
+  quantity Int
+  price    Decimal @db.Decimal(10, 2)
+
+  orderId Int
+  order   Order @relation(fields: [orderId], references: [id])
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+}

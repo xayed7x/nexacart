@@ -1,46 +1,67 @@
-"use client";
-
-import { notFound } from "next/navigation";
-import { useParams } from "next/navigation";
-import { products } from "@/lib/placeholder-data";
+import prisma from '@/lib/prisma';
+import { notFound } from 'next/navigation';
 import StarRating from "@/components/StarRating";
 import SizeSelector from "@/components/SizeSelector";
 import ColorSelector from "@/components/ColorSelector";
 import DetailsAccordion from "@/components/DetailsAccordion";
 import ProductGrid from "@/components/ProductGrid";
-import { useCart } from "@/app/contexts/CartContext"; // 1. Import useCart
 import Image from "next/image";
+import AddToCartButton from '@/components/AddToCartButton';
 
-// Note: This is now a Client Component
-export default function ProductPage() {
-  const params = useParams();
-  const productId = params.productId as string;
-  const product = products.find((p) => p.id === Number(productId));
-  const { addToCart } = useCart(); // 2. Get the addToCart function
+export default async function ProductPage({ params }: { params: { productId: string } }) {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: parseInt(params.productId),
+    },
+    include: {
+      category: true,
+    },
+  });
 
   if (!product) {
     notFound();
   }
 
   // Find related products
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
+  const relatedProducts = await prisma.product.findMany({
+    where: {
+      categoryId: product.categoryId,
+      id: {
+        not: product.id,
+      },
+    },
+    take: 4,
+  });
 
-  // 3. Create a handler function to add the item to the cart
-  const handleAddToCart = () => {
-    // We create a CartItem object from the product data
-    const itemToAdd = {
-      id: product.id.toString(),
-      name: product.name,
-      price: parseFloat(product.price.replace("$", "")), // Convert price string to number
-      quantity: 1, // Default quantity is 1
-      image: product.imageSrc,
-    };
-    addToCart(itemToAdd);
-    // Optional: Add a confirmation message here later
-    console.log(`${product.name} added to cart!`);
+  const serializableRelatedProducts = relatedProducts.map((p) => ({
+    ...p,
+    price: p.price.toString(),
+  }));
+
+  const serializableProduct = {
+    ...product,
+    price: product.price.toString(),
   };
+
+  // Safely parse JSON fields
+  let reviews: { average: number; count: number } | null = null;
+  if (product.reviews) {
+    if (typeof product.reviews === 'string') {
+      reviews = JSON.parse(product.reviews);
+    } else if (typeof product.reviews === 'object') {
+      reviews = product.reviews as { average: number; count: number };
+    }
+  }
+  
+  const colorsFromDb = product.availableColors;
+  let availableColors: { name: string; hex: string; }[] | null = null;
+
+  if (Array.isArray(colorsFromDb)) {
+    availableColors = colorsFromDb.map((color: any) => ({
+      name: color.name,
+      hex: color.bgColor || color.hex, // Handle both possible property names
+    }));
+  }
 
   return (
     <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 min-h-[calc(100vh-5rem)]">
@@ -59,23 +80,23 @@ export default function ProductPage() {
         {/* Right Column: Product Details */}
         <div>
           <p className="font-montserrat text-sm uppercase tracking-widest text-mocha-mousse mb-2">
-            {product.category}
+            {product.category.name}
           </p>
           <h1 className="font-montserrat text-4xl md:text-5xl font-extrabold text-charcoal dark:text-off-white mb-4">
             {product.name}
           </h1>
 
-          {product.reviews && (
+          {reviews && (
             <div className="mb-4">
               <StarRating
-                average={product.reviews.average}
-                count={product.reviews.count}
+                average={reviews.average}
+                count={reviews.count}
               />
             </div>
           )}
 
           <p className="font-merriweather text-3xl text-charcoal dark:text-soft-grey mb-6">
-            {product.price}
+            {`$${product.price}`}
           </p>
 
           <div className="font-merriweather text-charcoal/90 dark:text-soft-grey/90 space-y-4 mb-8">
@@ -83,34 +104,28 @@ export default function ProductPage() {
           </div>
 
           <div className="space-y-8 mb-8">
-            {product.availableSizes && (
+            {product.availableSizes && product.availableSizes.length > 0 && (
               <SizeSelector sizes={product.availableSizes} />
             )}
-            {product.availableColors && (
-              <ColorSelector colors={product.availableColors} />
+            {availableColors && availableColors.length > 0 && (
+              <ColorSelector colors={availableColors} />
             )}
           </div>
 
-          {product.details && (
+          {product.details && product.details.length > 0 && (
             <div className="mt-8">
               <DetailsAccordion details={product.details} />
             </div>
           )}
 
-          {/* 4. Attach the handler to the button's onClick event */}
-          <button
-            onClick={handleAddToCart}
-            className="w-full bg-mocha-mousse text-off-white font-montserrat font-bold py-4 px-8 rounded-sm uppercase tracking-wider hover:bg-charcoal dark:hover:bg-off-white dark:hover:text-charcoal transition-colors duration-300"
-          >
-            Add to Cart
-          </button>
+          <AddToCartButton product={serializableProduct} />
         </div>
       </div>
 
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
         <div className="pt-16 md:pt-24">
-          <ProductGrid title="You Might Also Like" products={relatedProducts} />
+          <ProductGrid title="You Might Also Like" products={serializableRelatedProducts} />
         </div>
       )}
     </main>

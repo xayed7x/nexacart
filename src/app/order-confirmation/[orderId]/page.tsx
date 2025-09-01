@@ -1,99 +1,85 @@
-"use client";
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import prisma from '@/lib/prisma';
+import { formatCurrency } from '@/lib/formatters';
 
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { CartItem } from "@/app/contexts/CartContext"; // Import the CartItem type
-import Image from "next/image";
+interface OrderConfirmationPageProps {
+  params: {
+    orderId: string;
+  };
+}
 
-export default function OrderConfirmationPage() {
-  const params = useParams();
-  const { orderId } = params;
+export default async function OrderConfirmationPage({ params }: OrderConfirmationPageProps) {
+  const order = await prisma.order.findUnique({
+    where: { id: parseInt(params.orderId) },
+    include: {
+      items: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
 
-  // 1. Set up state to hold the confirmed order items
-  const [confirmedItems, setConfirmedItems] = useState<CartItem[]>([]);
-
-  // 2. useEffect to safely access sessionStorage on the client side
-  useEffect(() => {
-    const data = sessionStorage.getItem("orderConfirmationData");
-    if (data) {
-      setConfirmedItems(JSON.parse(data));
-      // Optional: Clear the session storage after reading it
-      // sessionStorage.removeItem('orderConfirmationData');
-    }
-  }, []); // Empty dependency array ensures this runs only once on mount
-
-  const subtotal = confirmedItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  if (!order) {
+    return notFound();
+  }
 
   return (
-    <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 min-h-[calc(100vh-5rem)]">
+    <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center">
-          <h1 className="font-montserrat text-4xl md:text-5xl font-extrabold text-charcoal dark:text-off-white mb-4">
-            Thank You!
+        <div className="text-center mb-10">
+          <h1 className="font-montserrat text-4xl md:text-5xl font-extrabold text-charcoal dark:text-off-white mb-3">
+            Thank you, {order.customerName}!
           </h1>
-          <p className="text-lg text-charcoal/80 dark:text-off-white/80 mb-6">
+          <p className="text-lg text-charcoal/80 dark:text-off-white/80">
             Your order has been placed successfully.
           </p>
-          <div className="bg-off-white dark:bg-charcoal shadow-sm rounded-sm p-6 mb-8 inline-block">
-            <p className="text-gray-600 dark:text-gray-400 mb-2">
-              Your Order Number is:
-            </p>
-            <p className="font-mono text-2xl font-bold text-mocha-mousse">
-              {orderId}
+          <p className="text-lg text-charcoal/80 dark:text-off-white/80">
+            Order ID: <span className="font-bold text-mocha-mousse">#{order.id}</span>
+          </p>
+        </div>
+
+        <div className="bg-off-white dark:bg-charcoal rounded-sm shadow-md p-6 mb-8">
+          <h2 className="text-2xl font-bold font-montserrat text-charcoal dark:text-off-white mb-6 border-b border-soft-grey dark:border-gray-700 pb-4">
+            Order Summary
+          </h2>
+          <ul className="divide-y divide-soft-grey dark:divide-gray-700">
+            {order.items.map((item) => (
+              <li key={item.id} className="flex items-center py-4">
+                <img
+                  src={item.product.imageSrc}
+                  alt={item.product.name}
+                  className="w-20 h-20 object-cover rounded-sm mr-4"
+                />
+                <div className="flex-grow">
+                  <h3 className="font-bold text-charcoal dark:text-off-white">
+                    {item.product.name}
+                  </h3>
+                  <p className="text-sm text-charcoal/80 dark:text-off-white/80">
+                    Qty: {item.quantity}
+                  </p>
+                </div>
+                <p className="font-semibold text-charcoal dark:text-off-white">
+                  {formatCurrency(item.price * item.quantity)}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6 pt-4 border-t border-soft-grey dark:border-gray-700 text-right">
+            <p className="text-xl font-bold text-charcoal dark:text-off-white">
+              Total: {formatCurrency(order.totalPrice)}
             </p>
           </div>
         </div>
 
-        {/* 3. Display the confirmed order details */}
-        <div className="bg-off-white dark:bg-charcoal shadow-sm rounded-sm p-6 sm:p-8">
-          <h2 className="text-2xl font-bold font-montserrat text-charcoal dark:text-off-white border-b border-soft-grey dark:border-gray-700 pb-4 mb-4">
-            Order Summary
-          </h2>
-          {confirmedItems.length > 0 ? (
-            <>
-              <ul className="divide-y divide-soft-grey dark:divide-gray-700">
-                {confirmedItems.map((item) => (
-                  <li
-                    key={item.id}
-                    className="flex items-center justify-between py-4"
-                  >
-                    <div className="flex items-center">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        width={64}
-                        height={64}
-                        className="w-16 h-16 rounded-md object-cover mr-4"
-                      />
-                      <div>
-                        <p className="font-bold">{item.name}</p>
-                        <p className="text-sm text-gray-500">
-                          Qty: {item.quantity}
-                        </p>
-                      </div>
-                    </div>
-                    <p className="font-bold">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-              <div className="border-t border-soft-grey dark:border-gray-700 mt-4 pt-4 text-right">
-                <div className="flex justify-end items-baseline font-bold text-lg">
-                  <span className="mr-4">Total</span>
-                  <span>${subtotal.toFixed(2)}</span>
-                </div>
-              </div>
-            </>
-          ) : (
-            <p className="text-center text-gray-500 py-4">
-              Loading order details...
-            </p>
-          )}
+        <div className="bg-off-white dark:bg-charcoal rounded-sm shadow-md p-6">
+            <h2 className="text-2xl font-bold font-montserrat text-charcoal dark:text-off-white mb-4">
+                Shipping Address
+            </h2>
+            <address className="not-italic text-charcoal/80 dark:text-off-white/80">
+                {order.shippingAddress}
+            </address>
         </div>
 
         <div className="text-center mt-10">

@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import CategoryShowcase from "@/components/CategoryShowcase";
 import ProductGrid from "@/components/ProductGrid";
-import { products } from "@/lib/placeholder-data";
+import prisma from '@/lib/prisma';
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,18 +15,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
-  // THIS IS THE LINE WE ARE CHANGING
+export default async function Home() {
+  const productsWithCategory = await prisma.product.findMany({
+    include: {
+      category: true,
+    },
+  });
+
+  const products = productsWithCategory.map(product => ({
+    ...product,
+    price: product.price.toString(), // Convert Decimal to string
+    reviews: product.reviews ? (typeof product.reviews === 'string' ? JSON.parse(product.reviews) : product.reviews) : null,
+  }));
+
   const featuredProducts = products.filter((p) => p.isFeatured);
 
-  const clothingProducts = products.filter((p) => p.category === "Clothing");
+  const clothingProducts = products.filter((p) => p.category.name === "Clothing");
   const electronicsProducts = products.filter(
-    (p) => p.category === "Electronics"
+    (p) => p.category.name === "Electronics"
   );
   const accessoriesProducts = products.filter(
-    (p) => p.category === "Accessories"
+    (p) => p.category.name === "Accessories"
   );
-  const perfumeProducts = products.filter((p) => p.category === "Perfumes");
+  const perfumeProducts = products.filter((p) => p.category.name === "Perfumes");
 
   return (
     <main>
