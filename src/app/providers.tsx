@@ -6,13 +6,13 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CartSidePanel from '@/components/CartSidePanel';
 
-function AppContent({ children, users }: { children: React.ReactNode; users: { id: number; name: string }[] }) {
+function AppContent({ children }: { children: React.ReactNode }) {
   const { isCartOpen } = useCart();
 
   return (
     <>
       <div className={`transition-all duration-300 ${isCartOpen ? 'blur-sm' : ''}`}>
-        <Header users={users} />
+        <Header />
         <main>{children}</main>
         <Footer />
       </div>
@@ -21,7 +21,7 @@ function AppContent({ children, users }: { children: React.ReactNode; users: { i
   );
 }
 
-export function AppProviders({ children, users }: { children: React.ReactNode; users: { id: number; name: string }[] }) {
+export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
@@ -30,7 +30,7 @@ export function AppProviders({ children, users }: { children: React.ReactNode; u
       disableTransitionOnChange
     >
       <CartProvider>
-        <AppContent users={users}>{children}</AppContent>
+        <AppContent>{children}</AppContent>
       </CartProvider>
     </ThemeProvider>
   );

@@ -24,19 +24,13 @@ export const metadata = {
   description: "A modern ecommerce showcase built with Next.js",
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const users = await prisma.user.findMany({
-    select: { id: true, name: true },
-  });
-
-  const validUsers = users.filter((user) => user.name) as { id: number; name: string }[];
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${montserrat.variable} ${merriweather.variable} bg-off-white text-charcoal font-merriweather dark:bg-charcoal dark:text-off-white`}
       >
-        <AppProviders users={validUsers}>{children}</AppProviders>
+        <AppProviders>{children}</AppProviders>
       
       </body>
     </html>

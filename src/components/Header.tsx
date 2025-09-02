@@ -12,19 +12,24 @@ import { switchUser, getCurrentUserId } from '@/app/_actions/auth';
 import SearchController from './SearchController';
 
 
-export default function Header({ users }: { users: { id: number; name: string }[] }) {
+import { getUsers } from '@/app/_actions/users';
+
+export default function Header() {
   const { cartItems, openCart } = useCart();
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+  const [users, setUsers] = useState<{ id: number; name: string }[]>([]);
 
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    async function fetchCurrentUser() {
+    async function fetchData() {
       const userId = await getCurrentUserId();
       setCurrentUserId(userId);
+      const userList = await getUsers();
+      setUsers(userList);
     }
-    fetchCurrentUser();
+    fetchData();
   }, []);
 
   const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
