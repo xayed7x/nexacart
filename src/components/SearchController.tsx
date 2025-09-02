@@ -15,7 +15,7 @@ export default function SearchController() {
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)} className="p-2 text-charcoal hover:text-mocha-mousse">
+      <button onClick={() => setIsOpen(true)} className="p-2 text-charcoal hover:text-mocha-mousse dark:text-off-white">
         <span className="sr-only">Search</span>
         <SearchIcon />
       </button>
