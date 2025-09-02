@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import ProductForm from "../../ProductForm";
+import ProductForm from "../../../products/ProductForm";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
