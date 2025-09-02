@@ -61,14 +61,14 @@ export default async function OrderConfirmationPage({ params }: OrderConfirmatio
                   </p>
                 </div>
                 <p className="font-semibold text-charcoal dark:text-off-white">
-                  {formatCurrency(item.price * item.quantity)}
+                  {formatCurrency(item.price.toNumber() * item.quantity)}
                 </p>
               </li>
             ))}
           </ul>
           <div className="mt-6 pt-4 border-t border-soft-grey dark:border-gray-700 text-right">
             <p className="text-xl font-bold text-charcoal dark:text-off-white">
-              Total: {formatCurrency(order.totalPrice)}
+              Total: {formatCurrency(order.totalPrice.toNumber())}
             </p>
           </div>
         </div>

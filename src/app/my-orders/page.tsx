@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { formatCurrency } from "@/lib/formatters";
 
 export default async function MyOrdersPage() {
-  const currentUserId = getCurrentUserId();
+  const currentUserId = await getCurrentUserId();
 
   // 1. Protect the route: If no user is logged in, redirect away.
   if (!currentUserId) {

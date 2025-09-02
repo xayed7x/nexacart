@@ -31,7 +31,12 @@ export default function CheckoutForm({ cartItems }: { cartItems: CartItem[] }) {
   const elements = useElements();
   const { clearCart } = useCart();
 
-  const [state, formAction] = useFormState(createOrder, { error: null, orderId: null });
+  type CreateOrderAction = (
+    prevState: { error?: string; orderId?: number | null },
+    formData: FormData
+  ) => Promise<{ error?: string; orderId?: number | null }>;
+
+  const [state, formAction] = useFormState(createOrder as CreateOrderAction, { error: undefined, orderId: undefined });
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");

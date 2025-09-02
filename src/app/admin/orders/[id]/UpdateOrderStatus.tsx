@@ -9,9 +9,14 @@ interface UpdateOrderStatusProps {
   currentStatus: string;
 }
 
-const initialState = {
-  error: "",
-  success: "",
+interface FormState {
+  error?: string;
+  success?: string;
+}
+
+const initialState: FormState = {
+  error: undefined,
+  success: undefined,
 };
 
 function SubmitButton() {

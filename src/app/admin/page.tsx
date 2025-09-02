@@ -37,7 +37,7 @@ export default async function AdminDashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <StatCard
           title="Total Revenue"
-          value={formatCurrency(totalRevenue)}
+          value={formatCurrency(typeof totalRevenue === 'number' ? totalRevenue : totalRevenue.toNumber())}
           description="All time gross revenue"
         />
         <StatCard

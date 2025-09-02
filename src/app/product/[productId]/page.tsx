@@ -33,10 +33,21 @@ export default async function ProductPage({ params }: { params: { productId: str
     take: 4,
   });
 
-  const serializableRelatedProducts = relatedProducts.map((p) => ({
-    ...p,
-    price: p.price.toString(),
-  }));
+  const serializableRelatedProducts = relatedProducts.map((p) => {
+    let parsedReviews: { average: number; count: number } | null = null;
+    if (p.reviews) {
+      if (typeof p.reviews === 'string') {
+        parsedReviews = JSON.parse(p.reviews);
+      } else if (typeof p.reviews === 'object') {
+        parsedReviews = p.reviews as { average: number; count: number };
+      }
+    }
+    return {
+      ...p,
+      price: p.price.toString(),
+      reviews: parsedReviews,
+    };
+  });
 
   const serializableProduct = {
     ...product,
@@ -104,9 +115,11 @@ export default async function ProductPage({ params }: { params: { productId: str
           </div>
 
           <div className="space-y-8 mb-8">
-            {product.availableSizes && product.availableSizes.length > 0 && (
-              <SizeSelector sizes={product.availableSizes} />
-            )}
+            {product.availableSizes && product.availableSizes.length > 0 && (() => {
+              const validSizes: ("S" | "M" | "L" | "XL")[] = ["S", "M", "L", "XL"];
+              const filteredSizes = product.availableSizes.filter(size => validSizes.includes(size as any)) as ("S" | "M" | "L" | "XL")[];
+              return <SizeSelector sizes={filteredSizes} />;
+            })()}
             {availableColors && availableColors.length > 0 && (
               <ColorSelector colors={availableColors} />
             )}

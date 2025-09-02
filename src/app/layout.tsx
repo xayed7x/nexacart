@@ -27,7 +27,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const users = await prisma.user.findMany({
     select: { id: true, name: true }
   });
-  const currentUserId = getCurrentUserId();
+  const currentUserId = await getCurrentUserId();
   return (
     <html lang="en" suppressHydrationWarning>
       <body

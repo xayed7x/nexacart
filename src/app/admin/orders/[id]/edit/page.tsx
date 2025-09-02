@@ -43,7 +43,7 @@ export default async function EditProductPage({
           Edit Product
         </h1>
         {/* We pass both the product data and categories to our reusable form */}
-        <ProductForm categories={categories} product={product} />
+        <ProductForm categories={categories} product={{ ...product, price: product.price.toNumber() }} />
       </div>
     </div>
   );
