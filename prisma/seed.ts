@@ -6,6 +6,26 @@ const prisma = new PrismaClient();
 async function main() {
   console.log(`Start seeding ...`);
 
+  // Delete existing users and create mock users
+  await prisma.user.deleteMany();
+  console.log('Deleted existing users.');
+
+  await prisma.user.createMany({
+    data: [
+      {
+        name: 'Alice Johnson',
+        email: 'customer@example.com',
+        password: 'dummyPassword123', // Not a real password
+      },
+      {
+        name: 'Admin User',
+        email: 'admin@example.com',
+        password: 'dummyAdminPassword123', // Not a real password
+      },
+    ],
+  });
+  console.log('Created mock users.');
+
   // 1. Clear existing data to ensure a clean slate
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();

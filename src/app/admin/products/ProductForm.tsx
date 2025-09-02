@@ -198,7 +198,7 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
 
       <div className="mt-6 flex items-center justify-end gap-x-4">
         <div className="flex-grow">
-          {product && <DeleteProductButton productId={product.id} />}
+          {product && <DeleteProductButton />}
         </div>
         <button
           type="button"

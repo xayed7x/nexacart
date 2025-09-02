@@ -58,14 +58,21 @@ export async function addProduct(prevState: unknown, formData: FormData) {
     const imageUrl = urlData.publicUrl;
 
     // 3. Create the product in the database with the new image URL
+    const slug = name.toLowerCase().replace(/\s+/g, '-') + '-' + Math.random().toString(36).substring(2, 9);
     await prisma.product.create({
       data: {
         name,
+        href: slug,
         description,
         price,
         categoryId,
         isFeatured: featured,
         imageSrc: imageUrl,
+        imageAlt: name,
+        details: [],
+        availableSizes: [],
+        availableColors: [],
+        reviews: [],
       },
     });
 
@@ -147,14 +154,17 @@ export async function updateProduct(prevState: unknown, formData: FormData) {
     }
 
     // Update the product in the database using its ID
+    const slug = name.toLowerCase().replace(/\s+/g, '-') + '-' + Math.random().toString(36).substring(2, 9);
     await prisma.product.update({
       where: { id: parseInt(id) },
       data: {
         name,
+        href: slug,
         description,
         price,
         categoryId,
         isFeatured: featured,
+        imageAlt: name,
         ...(imageUrl && { imageSrc: imageUrl }),
       },
     });
