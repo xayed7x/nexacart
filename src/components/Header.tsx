@@ -6,17 +6,26 @@ import { useCart } from "@/app/contexts/CartContext";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, Transition } from '@headlessui/react';
-import { Fragment, useTransition } from 'react';
+import { Fragment, useTransition, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { switchUser } from '@/app/_actions/auth';
+import { switchUser, getCurrentUserId } from '@/app/_actions/auth';
 import SearchController from './SearchController';
 
 
-export default function Header({ currentUserId, users }: { currentUserId: number | null; users: { id: number; name: string }[] }) {
+export default function Header({ users }: { users: { id: number; name: string }[] }) {
   const { cartItems, openCart } = useCart();
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
 
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    async function fetchCurrentUser() {
+      const userId = await getCurrentUserId();
+      setCurrentUserId(userId);
+    }
+    fetchCurrentUser();
+  }, []);
 
   const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const userId = e.target.value;

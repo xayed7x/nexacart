@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 // src/app/layout.tsx
 import { Montserrat, Merriweather } from "next/font/google";
 import "./globals.css";
@@ -25,15 +26,17 @@ export const metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const users = await prisma.user.findMany({
-    select: { id: true, name: true }
+    select: { id: true, name: true },
   });
-  const currentUserId = await getCurrentUserId();
+
+  const validUsers = users.filter((user) => user.name) as { id: number; name: string }[];
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${montserrat.variable} ${merriweather.variable} bg-off-white text-charcoal font-merriweather dark:bg-charcoal dark:text-off-white`}
       >
-        <AppProviders currentUserId={currentUserId} users={users}>{children}</AppProviders>
+        <AppProviders users={validUsers}>{children}</AppProviders>
       
       </body>
     </html>
