@@ -1,50 +1,34 @@
 import prisma from "@/lib/prisma";
-import ProductForm from "../../../products/ProductForm";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import UpdateOrderStatus from "../UpdateOrderStatus";
 
-interface EditProductPageProps {
+interface EditOrderPageProps {
   params: { id: string };
 }
 
-export default async function EditProductPage({
+export default async function EditOrderPage({
   params,
-}: EditProductPageProps) {
-  const productId = parseInt(params.id);
+}: EditOrderPageProps) {
+  const orderId = parseInt(params.id);
 
-  // Fetch the specific product to edit
-  const product = await prisma.product.findUnique({
-    where: { id: productId },
-  });
-
-  if (!product) {
+  if (isNaN(orderId)) {
     return notFound();
   }
 
-  // Fetch all categories for the form's dropdown selector
-  const categories = await prisma.category.findMany({
-    orderBy: {
-      name: "asc",
-    },
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
   });
 
+  if (!order) {
+    notFound();
+  }
+
   return (
-    <div className="font-montserrat">
-      <div className="mb-6">
-        <Link
-          href="/admin/products"
-          className="text-mocha-mousse hover:underline font-semibold"
-        >
-          &larr; Back to All Products
-        </Link>
-      </div>
-      <div className="bg-white p-8 rounded-lg shadow-md text-charcoal">
-        <h1 className="text-3xl font-bold font-merriweather text-charcoal mb-6">
-          Edit Product
-        </h1>
-        {/* We pass both the product data and categories to our reusable form */}
-        <ProductForm categories={categories} product={{ ...product, price: product.price.toNumber() }} />
-      </div>
+    <div>
+      <h1 className="text-3xl font-bold font-merriweather text-charcoal mb-6">
+        Edit Order #{order.id}
+      </h1>
+      <UpdateOrderStatus orderId={order.id} currentStatus={order.status} />
     </div>
   );
 }
