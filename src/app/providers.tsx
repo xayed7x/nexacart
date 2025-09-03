@@ -13,7 +13,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
     <>
       <div className={`transition-all duration-300 ${isCartOpen ? 'blur-sm' : ''}`}>
         <Header />
-        <main>{children}</main>
+        <main className="mt-0 pt-0">{children}</main>
         <Footer />
       </div>
       <CartSidePanel />

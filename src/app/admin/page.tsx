@@ -14,7 +14,7 @@ function StatCard({
   description: string;
 }) {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md font-montserrat text-charcoal">
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md font-montserrat text-charcoal">
       <h3 className="text-sm font-medium text-gray-500">{title}</h3>
       <p className="mt-2 text-3xl font-bold font-merriweather">{value}</p>
       <p className="mt-1 text-sm text-gray-500">{description}</p>
@@ -53,7 +53,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Recent Orders Section */}
-      <div className="mt-12 bg-white p-8 rounded-lg shadow-md font-montserrat text-charcoal">
+      <div className="mt-12 bg-white p-4 sm:p-8 rounded-lg shadow-md font-montserrat text-charcoal">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold font-merriweather">
             Recent Orders
@@ -69,16 +69,16 @@ export default async function AdminDashboardPage() {
           <table className="min-w-full text-left text-sm">
             <thead className="border-b-2 border-soft-grey font-semibold">
               <tr>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-4 py-3 sm:px-6 sm:py-4">
                   Order ID
                 </th>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-4 py-3 sm:px-6 sm:py-4">
                   Customer
                 </th>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-4 py-3 sm:px-6 sm:py-4">
                   Date
                 </th>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-4 py-3 sm:px-6 sm:py-4">
                   Total
                 </th>
               </tr>
@@ -86,16 +86,16 @@ export default async function AdminDashboardPage() {
             <tbody>
               {recentOrders.map((order) => (
                 <tr key={order.id} className="border-b border-soft-grey">
-                  <td className="whitespace-nowrap px-6 py-4 font-semibold text-mocha-mousse">
+                  <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4 font-semibold text-mocha-mousse">
                     #{order.id}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4">
+                  <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4">
                     {order.customerName}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4">
+                  <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4">
                     {format(new Date(order.createdAt), "MMM d, yyyy")}
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4">
+                  <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4">
                     {formatCurrency(order.totalPrice.toNumber())}
                   </td>
                 </tr>

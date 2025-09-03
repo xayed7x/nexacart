@@ -13,7 +13,7 @@ export default async function AdminOrdersPage() {
   });
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-md font-montserrat text-charcoal">
+    <div className="bg-white p-4 sm:p-8 rounded-lg shadow-md font-montserrat text-charcoal">
       <h1 className="text-3xl font-bold font-merriweather text-charcoal mb-6">
         Manage Orders
       </h1>
@@ -21,22 +21,22 @@ export default async function AdminOrdersPage() {
         <table className="min-w-full text-left text-sm">
           <thead className="border-b-2 border-soft-grey font-semibold">
             <tr>
-              <th scope="col" className="px-6 py-4">
+              <th scope="col" className="px-4 py-3 sm:px-6 sm:py-4">
                 Order ID
               </th>
-              <th scope="col" className="px-6 py-4">
+              <th scope="col" className="px-4 py-3 sm:px-6 sm:py-4">
                 Customer
               </th>
-              <th scope="col" className="px-6 py-4">
+              <th scope="col" className="px-4 py-3 sm:px-6 sm:py-4">
                 Status
               </th>
-              <th scope="col" className="px-6 py-4">
+              <th scope="col" className="px-4 py-3 sm:px-6 sm:py-4">
                 Items
               </th>
-              <th scope="col" className="px-6 py-4">
+              <th scope="col" className="px-4 py-3 sm:px-6 sm:py-4">
                 Total
               </th>
-              <th scope="col" className="px-6 py-4">
+              <th scope="col" className="px-4 py-3 sm:px-6 sm:py-4">
                 Date
               </th>
             </tr>
@@ -57,17 +57,17 @@ export default async function AdminOrdersPage() {
                   passHref
                 >
                   <tr className="border-b border-soft-grey transition-colors duration-200 hover:bg-off-white cursor-pointer">
-                    <td className="whitespace-nowrap px-6 py-4 font-semibold text-mocha-mousse">
+                    <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4 font-semibold text-mocha-mousse">
                       #{order.id}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">
+                    <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4">
                       {order.customerName}
                       <br />
                       <span className="text-xs text-gray-500">
                         {order.customerEmail}
                       </span>
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">
+                    <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4">
                       <span
                         className={`px-2 py-1 text-xs font-semibold rounded-full ${
                           order.status === "Pending"
@@ -80,13 +80,10 @@ export default async function AdminOrdersPage() {
                         {order.status}
                       </span>
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {order.items.length}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4">
+                    <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4">
                       ${order.totalPrice.toString()}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">
+                    <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-4">
                       {format(new Date(order.createdAt), "MMM d, yyyy")}
                     </td>
                   </tr>

@@ -67,7 +67,7 @@ export default function Header() {
                 height={100}
                 className="h-10 w-auto"
               />
-              <span className="font-montserrat text-2xl font-extrabold text-charcoal dark:text-off-white">
+              <span className="font-montserrat text-2xl font-extrabold text-charcoal dark:text-off-white hidden sm:inline">
                 NexaCart
               </span>
             </Link>
