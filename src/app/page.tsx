@@ -1,4 +1,4 @@
-import Hero from "@/components/Hero";
+import HeroCarousel from '@/components/HeroCarousel';
 import CategoryShowcase from "@/components/CategoryShowcase";
 import ProductGrid from "@/components/ProductGrid";
 import prisma from '@/lib/prisma';
@@ -41,7 +41,7 @@ export default async function Home() {
 
   return (
     <main>
-      <Hero />
+      <HeroCarousel />
       <CategoryShowcase />
       <ProductGrid title="Featured Products" products={featuredProducts} />
       <ProductGrid title="Latest in Clothing" products={clothingProducts} />
